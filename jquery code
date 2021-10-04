@@ -1,0 +1,37 @@
+<!--download pdf-->
+<script type="text/javascript">
+    jQuery(function ($) {
+        $("#exportButton").click(function () {
+           $('#pawan').html($('#exportTable').html());
+           $('#pawan').find('.lastColumn').remove();
+      var doc = new jsPDF('l');
+
+  doc.autoTable({
+    html: '#Html_table_id',
+    bodyStyles: {
+        minCellHeight: 15,
+        textColor :'black',
+        
+    },
+    margin: {top: 15},
+    tableLineColor: [189, 195, 199],
+    tableLineWidth: 0.75,
+    theme: 'grid',
+    didDrawCell: function(data) {
+      if (data.column.index === 0 && data.cell.section === 'body') {
+         var td = data.cell.raw;
+         var img = td.getElementsByTagName('img')[0];
+         var dim = data.cell.height - data.cell.padding('vertical');
+         var textPos = data.cell.textPos;
+           doc.addImage(img.src, textPos.x, textPos.y, dim, dim);
+
+      }
+   //logo print here
+   var img1 = $("#logoforPdf").attr('src');
+         doc.addImage(img1, 15,  0, 25, 15);
+    }
+  });
+doc.save("channel_data.pdf");
+        });
+    });
+</script>
